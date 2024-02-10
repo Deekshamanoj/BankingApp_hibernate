@@ -11,17 +11,16 @@ import com.ty.bankingApp.util.BankUtil;
 
 public class UserDao {
 
-	public  void addUser(User user)
-	{
-		EntityManager manager=BankUtil.createEntityManager();
-		EntityTransaction transaction=manager.getTransaction();
+	public void addUser(User user) {
+		EntityManager manager = BankUtil.createEntityManager();
+		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
 		manager.persist(user);
 		transaction.commit();
 		System.out.println("user added successfully");
 	}
-	
-	public  User findUserById(int id) {
+
+	public User findUserById(int id) {
 		return BankUtil.createEntityManager().find(User.class, id);
 	}
 
@@ -30,13 +29,16 @@ public class UserDao {
 		Query query = BankUtil.createEntityManager().createQuery(jpql);
 		query.setParameter(1, email);
 		query.setParameter(2, password);
-		List<User> list= query.getResultList();
-		if(list!=null && !(list.isEmpty()))
-		{
+		List<User> list = query.getResultList();
+		if (list != null && !(list.isEmpty())) {
 			System.out.println("Login successful");
 			return list.get(0);
 		}
 		return null;
+	}
+
+	public boolean deleteUser(int userId) {
+		return false;
 	}
 
 }
