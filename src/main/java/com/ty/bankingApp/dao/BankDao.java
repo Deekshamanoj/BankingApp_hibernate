@@ -4,7 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.ManyToOne;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
+
+import org.hibernate.service.spi.Manageable;
 
 import com.ty.bankingApp.entity.Bank;
 import com.ty.bankingApp.entity.Branch;
@@ -25,19 +30,31 @@ public class BankDao {
 		return bank;
 	}
 
-	public void setBankBranch(Bank bank, Branch branch) {
-		
-		List<Branch> listOfBranch= bank.getBranches();
-		if(listOfBranch==null)
-		{
-			listOfBranch=new ArrayList<Branch>();
+	public Bank setBankBranch(Bank bank, Branch branch) {
+
+		List<Branch> listOfBranch = bank.getBranches();
+		if (listOfBranch == null) {
+			listOfBranch = new ArrayList<Branch>();
 		}
 		listOfBranch.add(branch);
 		bank.setBranches(listOfBranch);
-		
-		EntityManager manager = BankUtil.createEntityManager();
-		
-		
+		return bank;
 	}
+
+	public Bank updateBank(Bank bank) {
+		EntityManager manager = BankUtil.createEntityManager();
+	    EntityTransaction transaction =manager.getTransaction();
+	    
+	    transaction.begin();
+	    manager.merge(bank);
+	    transaction.commit();
+	    
+		return bank;
+	}
+
+	
+	
+	//bank
+	//listBranchs
 
 }
